@@ -1,6 +1,11 @@
 cc_library(
     name = 'mu',
     srcs = [
-        'base/test.cpp'
+        'base/string_utility.cpp',
+        'base/time_utility.cpp',
+        'base/log.cpp'
+    ],
+    deps = [
+        '#pthread'
     ]
 )

@@ -46,7 +46,7 @@ private:
     static void Init()
     {
         m_instance = new T();
-        atexit(destroy);
+        atexit(Destroy);
     }
 
 /**

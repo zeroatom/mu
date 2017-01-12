@@ -1,0 +1,3 @@
+#!/bin/sh
+
+blade test --full-test test/...

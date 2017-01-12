@@ -46,6 +46,16 @@ public:
      * @return 时间1-时间2
      */
     static time_t GetTimeDiff(const std::string &_t1, const std::string&_t2);
+
+    /**
+     * @brief IsSameDay 判断是否同一天
+     *
+     * @param t1 时间1
+     * @param t2 时间2
+     *
+     * @return true- 同一天 false- 不同天
+     */
+    static bool IsSameDay(struct tm& t1, struct tm& t2);
     
 };
 

@@ -1574,19 +1574,19 @@ class _NamespaceInfo(_BlockInfo):
     # Besides these, we don't accept anything else, otherwise we might
     # get false negatives when existing comment is a substring of the
     # expected namespace.  Example: http://go/ldkdc, http://cl/23548205
-    if self.name:
-      # Named namespace
-      if not Match((r'};*\s*(//|/\*).*\bnamespace\s+' + re.escape(self.name) +
-                    r'[\*/\.\\\s]*$'),
-                   line):
-        error(filename, linenum, 'readability/namespace', 5,
-              'Namespace should be terminated with "// namespace %s"' %
-              self.name)
-    else:
-      # Anonymous namespace
-      if not Match(r'};*\s*(//|/\*).*\bnamespace[\*/\.\\\s]*$', line):
-        error(filename, linenum, 'readability/namespace', 5,
-              'Namespace should be terminated with "// namespace"')
+    #if self.name:
+    #  # Named namespace
+    #  if not Match((r'};*\s*(//|/\*).*\bnamespace\s+' + re.escape(self.name) +
+    #                r'[\*/\.\\\s]*$'),
+    #               line):
+    #    error(filename, linenum, 'readability/namespace', 5,
+    #          'Namespace should be terminated with "// namespace %s"' %
+    #          self.name)
+    #else:
+    #  # Anonymous namespace
+    #  if not Match(r'};*\s*(//|/\*).*\bnamespace[\*/\.\\\s]*$', line):
+    #    error(filename, linenum, 'readability/namespace', 5,
+    #          'Namespace should be terminated with "// namespace"')
 
 
 class _PreprocessorInfo(object):
@@ -3459,13 +3459,13 @@ def CheckLanguage(filename, clean_lines, linenum, file_extension, include_state,
     # We allow non-const references in a few standard places, like functions
     # called "swap()" or iostream operators like "<<" or ">>". We also filter
     # out for loops, which lint otherwise mistakenly thinks are functions.
-    if not Search(
-        r'(for|swap|Swap|operator[<>][<>])\s*\(\s*'
-        r'(?:(?:typename\s*)?[\w:]|<.*>)+\s*&',
-        fnline):
-      error(filename, linenum, 'runtime/references', 2,
-            'Is this a non-const reference? '
-            'If so, make const or use a pointer.')
+    #if not Search(
+    #    r'(for|swap|Swap|operator[<>][<>])\s*\(\s*'
+    #    r'(?:(?:typename\s*)?[\w:]|<.*>)+\s*&',
+    #    fnline):
+    #  error(filename, linenum, 'runtime/references', 2,
+    #        'Is this a non-const reference? '
+    #        'If so, make const or use a pointer.')
 
   # Check to see if they're using an conversion function cast.
   # I just try to capture the most common basic types, though there are more.
@@ -4148,7 +4148,7 @@ def ProcessFileData(filename, file_extension, lines, error,
 
   ResetNolintSuppressions()
 
-  CheckForCopyright(filename, lines, error)
+  #CheckForCopyright(filename, lines, error)
 
   if IsHeaderFileExtension(file_extension): # phongchen: support more extension
     CheckForHeaderGuard(filename, lines, error)

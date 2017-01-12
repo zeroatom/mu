@@ -66,3 +66,8 @@ time_t TimeUtility::GetTimeDiff(const std::string &_t1, const std::string&_t2)
     time_t time = time1 - time2;
     return time;
 }
+
+bool TimeUtility::IsSameDay(struct tm& t1, struct tm& t2)
+{
+    return t1.tm_mday == t2.tm_mday && t1.tm_mon == t2.tm_mon && t1.tm_year == t2.tm_year;
+}
