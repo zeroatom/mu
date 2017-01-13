@@ -18,6 +18,7 @@
 using namespace std;
 
 #include "singleton.h"
+#include "arg_config.h"
 
 #define gettid() ::syscall(SYS_gettid)
 
@@ -29,15 +30,15 @@ enum LogLevel
     //致命错误 
     LOG_FATAL = 0,
     //一般错误
-    LOG_ERROR,
+    LOG_ERROR = 1,
     //警告
-    LOG_WARN,
+    LOG_WARN = 2,
     //信息
-    LOG_INFO,
+    LOG_INFO = 3,
     //跟踪
-    LOG_TRACE,
+    LOG_TRACE = 4,
     //调试
-    LOG_DEBUG,
+    LOG_DEBUG = 5,
     LOG_LEVEL_NUM
 };
 
@@ -58,6 +59,7 @@ public:
      */
     Log(int _level, const string& _path, const string& _file,
             bool _printFile, bool _printSceen);
+    ~Log();
 
     /**
      * @brief 是否日志级别开启
@@ -67,6 +69,25 @@ public:
      * @return true-开启 false-未开启
      */
     bool IsLevelEnabled(int _level);
+    /**
+     * @brief ModLevel 修改日志等级
+     *
+     * @param _level 等级
+     * @param _flag 标志
+     */
+    void ModLevel(int _level, bool _flag);
+    /**
+     * @brief ModPrintFile 修改打印文件标志
+     *
+     * @param _flag 标志
+     */
+    void ModPrintFile(bool _flag);
+    /**
+     * @brief ModPrintScreen 修改打印屏幕标志
+     *
+     * @param _flag 标志
+     */
+    void ModPrintScreen(bool _flag);
 
     /**
      * @brief 记录日志
@@ -143,10 +164,23 @@ public:
      * @brief start 开启日志服务
      *
      * @param _opt 开启参数
+     *  -log_level 日志等级
+     *  -log_path 日志路径
+     *  -log_filename 日志名称
+     *  -log_print_file 是否打印文件
+     *  -log_print_screen 是否打印屏幕
      *
      * @return 0- 开启成功 其他- 失败
      */
     int Start(const string& _opt);
+    /**
+     * @brief Start 开启日志服务
+     *
+     * @param _arg 开启参数
+     *
+     * @return 0- 开启成功 其他- 失败
+     */
+    int Start(ArgConfig& _arg);
     /**
      * @brief stop 停止日志服务
      *
@@ -168,19 +202,19 @@ public:
      * @param _level 日志等级
      * @param _flag 开启标识
      */
-    //void mod_level(int _level, bool _flag);
+    void ModLevel(int _level, bool _flag);
     /**
      * @brief 修改日志写文件标识
      *
      * @param _flag 开启标识
      */
-    //void mod_print_file(bool _flag);
+    void ModPrintFile(bool _flag);
     /**
      * @brief 开启打印屏幕标识
      *
      * @param _flag 开启标识
      */
-    //void mod_print_screen(bool _flag);
+    void ModPrintScreen(bool _flag);
 
 private:
     /**

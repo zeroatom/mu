@@ -8,6 +8,7 @@
 #include "log.h"
 #include "time_utility.h"
 
+
 using namespace mu;
 
 Log::Log(int _level, const string& _path, const string& _file,
@@ -25,9 +26,36 @@ Log::Log(int _level, const string& _path, const string& _file,
    m_enableScreen = _printSceen;
 }
 
+Log::~Log()
+{
+    m_file.close();
+}
+
 bool Log::IsLevelEnabled(int _level)
 {
     return m_enableLevel & (1 << _level);
+}
+
+void Log::ModLevel(int _level, bool _flag)
+{
+    if(_flag)
+    {
+        m_enableLevel |= (1 << _level);
+    }
+    else 
+    {
+        m_enableLevel &= (1 << _level);
+    }
+}
+
+void Log::ModPrintFile(bool _flag)
+{
+    m_enableFile = _flag;
+}
+
+void Log::ModPrintScreen(bool _flag)
+{
+    m_enableScreen = _flag;
 }
 
 // 颜色输出
@@ -140,11 +168,17 @@ LogService::~LogService()
 
 int LogService::Start(const string& _opt)
 {
-    int level = 5;
-    string path = "./logd";
-    string filename = "log";
-    bool printFile = true;
-    bool printScreen = true;
+    ArgConfig arg(_opt);
+    return Start(arg);
+}
+
+int LogService::Start(ArgConfig& _arg)
+{
+    int level = _arg.GetInteger("-log_level", 5);
+    string path = _arg.Get("-log_path","./log");
+    string filename = _arg.Get("-log_filename", "log");
+    bool printFile = _arg.GetBoolean("-log_print_file", true);
+    bool printScreen = _arg.GetBoolean("-log_print_screen", false);
 
     m_log = new Log(level,path,filename,printFile,printScreen);
     return 0;
@@ -160,4 +194,27 @@ int LogService::Stop()
     delete m_log;
     m_log = NULL;
     return 0;
+}
+
+void LogService::ModLevel(int _level, bool _flag)
+{
+    if(NULL != m_log)
+    {
+        m_log->ModLevel(_level, _flag);
+    }
+}
+
+void LogService::ModPrintFile(bool _flag)
+{
+    if(NULL != m_log)
+    {
+        m_log->ModPrintFile(_flag);
+    }
+}
+void LogService::ModPrintScreen(bool _flag)
+{
+    if(NULL != m_log)
+    {
+        m_log->ModPrintScreen(_flag);
+    }
 }

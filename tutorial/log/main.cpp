@@ -4,7 +4,8 @@ using namespace mu;
 
 int main(int argc,char **argv)
 {
-    Singleton<LogService>::Instance().Start("-log");
+    string opt = "-log_level 4 -log_path ./logs -log_filename test -log_print_file false -log_print_screen true";
+    Singleton<LogService>::Instance().Start(opt);
 
     LOGDEBUG("dfdfd %d",1);
     LOGTRACE("dfdfd %d",1);
