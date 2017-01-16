@@ -3,6 +3,12 @@
 
 using namespace mu;
 
+TaskImpl::TaskImpl(TASK_FUNC _func, void* _arg):
+    m_func(_func),
+    m_arg(_arg)
+{
+}
+
 void TaskImpl::Run()
 {
     m_func(m_arg);
@@ -10,6 +16,7 @@ void TaskImpl::Run()
 
 TaskI* TaskImpl::Clone()
 {
+
     return new TaskImpl(m_func, m_arg);
 }
 
@@ -27,6 +34,10 @@ Task::Task(TASK_FUNC _f, void* _arg):
 {
 }
 
+Task::Task(TaskI* _taskI):
+    m_taskImpl(_taskI)
+{
+}
 Task::Task(const Task& _src):
     m_taskImpl(_src.m_taskImpl->Clone())
 {
@@ -48,9 +59,4 @@ Task& Task::operator=(const Task& _src)
 void Task::Run()
 {
     m_taskImpl->Run();
-}
-
-Task TaskBinder::Gen(void (*_func)(void*), void* _p)
-{
-    return Task(_func,_p);
 }
