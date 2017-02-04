@@ -24,6 +24,8 @@
 #ifndef _TASK_QUEUE_I_H_
 #define _TASK_QUEUE_I_H_
 
+#include "config.h"
+
 #include <list>
 #include <vector>
 #include <iostream>
@@ -144,11 +146,11 @@ class TaskQueueI
 public:
     typedef list<Task> TaskList;
 public:
-    virtual ~TaskQueueI();
+    virtual ~TaskQueueI(){};
     /**
      * @brief Close 关闭任务队列
      */
-    virtual void Close();
+    virtual void Close() = 0;
     /**
      * @brief Produce 生产任务
      *

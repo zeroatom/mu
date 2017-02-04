@@ -1,5 +1,7 @@
 #include <iostream>
 #include "thirdparty/mu/base/task_queue_i.h"
+#include "thirdparty/mu/base/task_queue_impl.h"
+#include "thirdparty/mu/base/thread.h"
 
 using namespace mu;
 using namespace std;
@@ -86,7 +88,7 @@ private:
     
 };
 
-void test()
+void TestCplus()
 {
     TF tf;
     Task t0 = TaskBinder::Gen(&TF::F0,&tf);    
@@ -105,7 +107,7 @@ void test()
     t6.Run();
 }
 
-int main(int argc, char** argv)
+void TestC()
 {
     Task t1 = TaskBinder::Gen(C1,(void *)&C0);
     t1.Run();
@@ -123,6 +125,66 @@ int main(int argc, char** argv)
     t7.Run();
     Task t8 = TaskBinder::Gen(C8,1,2,3,4,5,6);
     t8.Run();
-    test();
+}
+
+void TestQueue()
+{
+    TaskQueue* tq = new TaskQueue();
+    Task t1 = TaskBinder::Gen(C1,(void *)&C0);
+    Task t2 = TaskBinder::Gen(C2);
+    Task t3 = TaskBinder::Gen(C3,1);
+    Task t4 = TaskBinder::Gen(C4,1,1.5);
+    Task t5 = TaskBinder::Gen(C5,1,2,3);
+    Task t6 = TaskBinder::Gen(C6,1,2,3,4);
+    Task t7 = TaskBinder::Gen(C7,1,2,3,4,5);
+    Task t8 = TaskBinder::Gen(C8,1,2,3,4,5,6);
+    tq->Produce(t1);
+    tq->Produce(t2);
+    tq->Produce(t3);
+    tq->Produce(t4);
+    tq->Produce(t5);
+    tq->Produce(t6);
+    tq->Produce(t7);
+    tq->Produce(t8);
+    //tq->Run();
+    tq->BatchRun();
+}
+
+void TestThread()
+{
+    Task t8 = TaskBinder::Gen(C8,1,2,3,4,5,6);
+    Thread* thread = new Thread();
+    thread->CreateThread(t8,3);
+    sleep(1);
+    thread->Join();
+}
+
+void TestThreadPool()
+{
+    Thread* thread = new Thread();
+    TaskQueuePool* tq = new TaskQueuePool(2);
+    thread->CreateThread(TaskQueuePool::GenTask(tq), 2);
+    TaskQueueI* tq1 =  tq->Alloc(0);
+    Task t3 = TaskBinder::Gen(C3,1);
+    Task t4 = TaskBinder::Gen(C4,1,1.5);
+    tq1->Produce(t3);
+    tq1->Produce(t4);
+    TaskQueueI* tq2 =  tq->Alloc(1);
+    Task t5 = TaskBinder::Gen(C5,1,2,3);
+    Task t6 = TaskBinder::Gen(C6,1,2,3,4);
+    tq2->Produce(t5);
+    tq2->Produce(t6);
+    sleep(5);
+    tq->Close();
+    thread->Join();
+}
+
+int main(int argc, char** argv)
+{
+    //TestC();
+    //TestCplus();
+    //TestQueue();
+    //TestThread();
+    TestThreadPool();
     return 0;
 }
