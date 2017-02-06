@@ -22,7 +22,7 @@ public:
      *
      * @return 
      */
-    static int64_t GetCurrentMs();
+    static uint64_t GetCurrentMs();
     /**
      * @brief 得到字符串形式的时间格式: 1999-9-9 9:9:9
      *

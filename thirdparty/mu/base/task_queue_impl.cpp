@@ -27,6 +27,7 @@ void TaskQueue::Produce(const Task& _task)
 
     if(needSig)
     {
+        cout<< "tongzhi"<<endl;
         m_cond.Signal();
     }
 }
@@ -54,6 +55,7 @@ int TaskQueue::Consume(Task& _task_)
     {
         if(false == m_flag)
         {
+            cout << "线程结束"<<endl;
             return -1;
         }
         m_cond.Wait();
@@ -88,7 +90,9 @@ int TaskQueue::Run()
     while(0 == Consume(t))
     {
         t.Run();
+        cout<<"处理"<<endl;
     }
+    cout<<"线程结束 2"<<endl;
     return 0;
 }
 

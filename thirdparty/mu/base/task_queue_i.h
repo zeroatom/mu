@@ -247,7 +247,6 @@ public:
                 return new Lambda(destFunc,arg1);
             }
         };
-        cout << "D3" << endl;
         return Task(new Lambda(_func, _arg1));
     }
 
@@ -284,7 +283,6 @@ public:
                 return new Lambda(destFunc,arg1, arg2);
             }
         };
-        cout << "D4" << endl;
         return Task(new Lambda(_func, _arg1,_arg2));
     }
 

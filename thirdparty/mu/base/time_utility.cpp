@@ -12,12 +12,12 @@ using namespace mu;
  *
  * @return 
  */
-int64_t TimeUtility::GetCurrentMs()
+uint64_t TimeUtility::GetCurrentMs()
 {
     struct timeval tv;
     gettimeofday(&tv, NULL);
 
-    int64_t timestamp = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+    uint64_t timestamp = tv.tv_sec * 1000 + tv.tv_usec / 1000;
     return timestamp;
 }
 

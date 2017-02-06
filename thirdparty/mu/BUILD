@@ -13,7 +13,8 @@ cc_library(
         'net/acceptor_impl.cpp',
         'net/common_socket_controller.cpp',
         'net/epoll_impl.cpp',
-        'net/socket_impl.cpp'
+        'net/socket_impl.cpp',
+        'rpc/broker.cpp'
 
     ],
     deps = [

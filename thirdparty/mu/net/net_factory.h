@@ -111,6 +111,7 @@ public:
         {
             if(true == startedFlag)
             {
+                cout<< "net_factory" <<endl;
                 for(size_t i = 0; i < all_acceptor.size(); ++i)
                 {
                     all_acceptor[i]->Close();

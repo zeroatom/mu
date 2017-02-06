@@ -26,11 +26,13 @@ int Thread::CreateThread(Task _func, int num)
 
 int Thread::Join()
 {
+    cout<< "等待"<<endl;
     list<pthread_t>::iterator it = m_threadList.begin();
     for(; it != m_threadList.end(); ++it)
     {
         pthread_join((*it), NULL);
     }
     m_threadList.clear();
+    cout <<"等待2"<<endl;
     return 0;
 }
